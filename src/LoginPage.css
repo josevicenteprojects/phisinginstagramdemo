@@ -1,0 +1,236 @@
+/* Estilos globales */
+body {
+  margin: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Contenedor principal */
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  padding: 0 20px;
+}
+
+/* Contenedor del formulario */
+.login-form-container {
+  margin: auto;
+  max-width: 350px;
+  width: 100%;
+}
+
+/* Estilos del formulario */
+.login-form {
+  background-color: #000;
+  border: 1px solid #262626;
+  border-radius: 1px;
+  padding: 20px 40px;
+  margin-bottom: 10px;
+}
+
+/* Logo de Instagram */
+.login-form h1 {
+  font-family: 'Instagram Sans Script', cursive;
+  font-size: 40px;
+  font-weight: normal;
+  margin: 22px auto 12px;
+  text-align: center;
+}
+
+/* Campos de entrada */
+.login-form input {
+  background-color: #262626;
+  border: 1px solid #262626;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 6px;
+  padding: 9px 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-form input::placeholder {
+  color: #8e8e8e;
+}
+
+.login-form input:focus {
+  border-color: #555;
+  outline: none;
+}
+
+/* Botón de inicio de sesión */
+.login-form button {
+  background-color: #0095f6;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 7px 16px;
+  width: 100%;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #1877f2;
+}
+
+/* Divisor O */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #262626;
+}
+
+.divider span {
+  color: #8e8e8e;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 18px;
+  text-transform: uppercase;
+}
+
+/* Botón de Facebook */
+.facebook-login {
+  color: #385185;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 8px 0;
+  text-decoration: none;
+}
+
+.facebook-login:before {
+  content: "";
+  background: url('https://static.cdninstagram.com/rsrc.php/v3/y5/r/TJztmXpWTmS.png') no-repeat -414px -259px;
+  height: 16px;
+  width: 16px;
+  margin-right: 8px;
+}
+
+/* Link de contraseña olvidada */
+.forgot-password {
+  color: #00376b;
+  font-size: 12px;
+  text-align: center;
+  display: block;
+  margin-top: 12px;
+  text-decoration: none;
+}
+
+/* Contenedor de registro */
+.signup-container {
+  background-color: #000;
+  border: 1px solid #262626;
+  border-radius: 1px;
+  padding: 20px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.signup-container p {
+  color: #8e8e8e;
+  font-size: 14px;
+  margin: 15px;
+}
+
+.signup-container a {
+  color: #0095f6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Sección de descarga de app */
+.get-app {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.get-app p {
+  color: #8e8e8e;
+  font-size: 14px;
+  margin: 20px 0;
+}
+
+.app-stores {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.app-stores img {
+  height: 40px;
+}
+
+/* Footer */
+.footer {
+  margin-top: 20px;
+  padding: 0 16px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #8e8e8e;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.footer-copyright {
+  color: #8e8e8e;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Phone Image */
+.phone-container {
+  display: none;
+}
+
+.phone-image {
+  height: 600px;
+}
+
+/* Estados de carga y error */
+.error-message {
+  color: #ed4956;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+button.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Animación de carga */
+@keyframes buttonLoading {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+button.loading {
+  background: linear-gradient(90deg, #0095f6 0%, #00376b 50%, #0095f6 100%);
+  background-size: 200% 100%;
+  animation: buttonLoading 1.5s ease infinite;
+}

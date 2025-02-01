@@ -1,0 +1,20 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  node_bundler = "esbuild"
+
+[dev]
+  functions = "netlify/functions"
+  publish = "build"
+
+[forms]
+  [forms."login-form"]
+    email = "jvab5899@gmail.com" 
