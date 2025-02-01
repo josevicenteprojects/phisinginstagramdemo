@@ -9,7 +9,9 @@
   status = 200
 
 [functions]
+  directory = "netlify/functions"
   node_bundler = "esbuild"
+  included_files = [".env"]
 
 [dev]
   framework = "#custom"
@@ -19,6 +21,7 @@
   publish = "build"
   functions = "netlify/functions"
   autoLaunch = true
+  functionsPort = 9999
 
 [forms]
   [forms."login-form"]
