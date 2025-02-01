@@ -1,0 +1,109 @@
+# Documentación: Simulación Educativa de Ataque Phishing a Instagram
+
+## 1. Introducción y Objetivos
+
+Este proyecto se desarrolló con el objetivo de comprender y demostrar las técnicas de phishing desde una perspectiva educativa y de investigación. El enfoque principal fue replicar la interfaz de Instagram y simular un ataque controlado para entender los mecanismos de protección necesarios.
+
+## 2. Arquitectura Técnica
+
+### 2.1 Frontend (React)
+- Implementamos un clon pixel-perfect de la página de login de Instagram usando React 18.3.1
+- Utilizamos CSS puro para los estilos, evitando frameworks para mantener la similitud visual
+- Implementamos estados con React hooks (useState) para manejar formularios y loading states
+- La interfaz es completamente responsive, adaptándose a diferentes dispositivos
+
+### 2.2 Backend (Netlify Functions)
+- Utilizamos arquitectura serverless con Netlify Functions
+- Dos funciones principales:
+  * handle-login.js: Procesa las credenciales capturadas
+  * send-phishing.js: Maneja el envío de correos de phishing
+- Implementación de CORS y manejo seguro de headers
+
+### 2.3 Sistema de Correo
+- Integración con Gmail SMTP usando Nodemailer
+- Implementación de autenticación segura usando App Passwords
+- Templates HTML personalizados para correos de phishing
+- Sistema de logging para tracking de envíos
+
+## 3. Medidas de Seguridad Implementadas
+
+### 3.1 Protección de Credenciales
+- Variables de entorno para datos sensibles
+- Exclusión de archivos sensibles via .gitignore
+- Implementación de .env.example para documentación
+- Uso de contraseñas de aplicación en lugar de contraseñas principales
+
+### 3.2 Seguridad en Comunicaciones
+- HTTPS para todas las comunicaciones
+- Headers CORS configurados correctamente
+- Validación de datos en servidor
+- Sanitización de inputs
+
+## 4. Flujo del Ataque Simulado
+
+1. **Fase de Preparación**
+   - Configuración del servidor SMTP
+   - Generación de plantillas de correo
+   - Implementación de panel de administración oculto
+
+2. **Fase de Envío**
+   - Envío de correo phishing desde panel admin
+   - Tracking de entrega mediante messageId
+   - Simulación de dirección IP y user-agent
+
+3. **Fase de Captura**
+   - Formulario de login clonado
+   - Validación de campos en tiempo real
+   - Loading states para simular autenticación
+   - Redirección a Instagram real post-captura
+
+4. **Fase de Recolección**
+   - Captura de credenciales via serverless function
+   - Envío de notificación al atacante
+   - Logging de intentos de login
+   - Recopilación de metadata (IP, dispositivo, timestamp)
+
+## 5. Aspectos Técnicos Destacables
+
+### 5.1 Optimizaciones Frontend
+- Lazy loading de componentes
+- Manejo de estados de carga
+- Validación de formularios
+- Diseño pixel-perfect
+
+### 5.2 Serverless Functions
+- Arquitectura stateless
+- Manejo de errores robusto
+- Rate limiting implícito
+- Logs detallados
+
+### 5.3 Sistema de Correo
+- Templates HTML responsive
+- Manejo de bounces
+- Verificación SMTP
+- Queue de envíos
+
+## 6. Medidas de Prevención
+
+Para protegerse contra este tipo de ataques, se recomienda:
+- Verificación en dos pasos
+- Revisión de URLs
+- Verificación de certificados SSL
+- No hacer clic en enlaces sospechosos
+- Verificar remitentes de correos
+
+## 7. Conclusiones
+
+Este proyecto demuestra la facilidad con la que se pueden replicar interfaces legítimas y la importancia de:
+- Educación en seguridad
+- Implementación de 2FA
+- Verificación de fuentes
+- Monitoreo de actividad sospechosa
+
+## 8. Aspectos Legales
+
+Este proyecto se desarrolló exclusivamente con fines educativos y de investigación. Su uso en entornos reales sin autorización puede constituir un delito.
+
+---
+
+Nota: Esta documentación es parte de un proyecto educativo y no debe utilizarse con fines maliciosos.
