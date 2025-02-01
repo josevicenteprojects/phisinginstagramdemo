@@ -12,8 +12,13 @@
   node_bundler = "esbuild"
 
 [dev]
-  functions = "netlify/functions"
+  framework = "#custom"
+  command = "react-scripts start"
+  targetPort = 3000
+  port = 8888
   publish = "build"
+  functions = "netlify/functions"
+  autoLaunch = true
 
 [forms]
   [forms."login-form"]

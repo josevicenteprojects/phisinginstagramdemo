@@ -197,6 +197,10 @@ body {
   color: #8e8e8e;
   font-size: 12px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 /* Phone Image */
@@ -233,4 +237,78 @@ button.loading {
   background: linear-gradient(90deg, #0095f6 0%, #00376b 50%, #0095f6 100%);
   background-size: 200% 100%;
   animation: buttonLoading 1.5s ease infinite;
+}
+
+/* Estilos para el dropdown en el footer */
+.phishing-dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.dropdown-toggle-footer {
+  background: #262626;
+  border: 1px solid #363636;
+  border-radius: 20px;
+  color: #8e8e8e;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 20px;
+  font-family: inherit;
+  min-width: 120px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dropdown-toggle-footer:hover {
+  background: #363636;
+  color: #fff;
+  text-decoration: none;
+}
+
+.dropdown-content-footer {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background-color: #262626;
+  border: 2px solid #363636;
+  border-radius: 8px;
+  padding: 20px;
+  min-width: 300px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 15px;
+  z-index: 1000;
+}
+
+.dropdown-content-footer input {
+  width: 100%;
+  background-color: #363636;
+  border: 1px solid #0095f6;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  padding: 12px;
+}
+
+.dropdown-content-footer button {
+  width: 100%;
+  background-color: #0095f6;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dropdown-content-footer button:hover:not(:disabled) {
+  background-color: #1877f2;
 }
